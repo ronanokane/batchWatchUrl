@@ -1,0 +1,19 @@
+{
+  "name": "testjest1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.4.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "mongodb": "^5.0.1"
+  }
+}
