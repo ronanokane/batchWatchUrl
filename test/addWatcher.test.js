@@ -4,6 +4,6 @@ test("Throw error when url xpath not specified", ()=>{
     expect(addWatcher()).rejects.toThrow(Error)
 })
 
-test('Method should throw Error', () => {
-    expect(addWatcher('dsadsad','dsadsad')).not.resolved.toThrow(Error);  // SUCCESS
+  test("Throw error when no callback defined", () => {
+    expect(addWatcher('dsadsad','dsadsad')).rejects.toThrow(Error);  // SUCCESS
 });

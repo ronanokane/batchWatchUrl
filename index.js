@@ -12,7 +12,7 @@ var changes=[]
 app.post('/addWatcher', async ({body: {url, xpath, cookies=""}}, res)=>{
     try{ let jobNo=await watch.addWatcher(url,xpath,cookies,(change)=>{
                 changes.push(change)
-                sendEventsToAll(change)
+                sendChangeToAll(change)
             })
         res.status(200).send({jobNo: jobNo})
     }catch(err){
@@ -49,9 +49,8 @@ app.get('/loggedChanges/:jobNo', async ({params: {jobNo}}, res)=>{
     }
 })
 
-app.get('/events', eventsHandler)
-
-function eventsHandler(request, response, next) {
+// SSE change detection event...
+app.get('/changes', (request, response, next) =>{
     const headers = {
       'Content-Type': 'text/event-stream',
       'Connection': 'keep-alive',
@@ -75,9 +74,9 @@ function eventsHandler(request, response, next) {
     request.on('close', () => {
       clients = clients.filter(client => client.id !== clientId)
     })
-}
+})
 
-function sendEventsToAll(change) {
+function sendChangeToAll(change) {
     clients.forEach(client => client.response.write(`data: ${JSON.stringify(change)}\n\n`))
 }
 
