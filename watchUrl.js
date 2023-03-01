@@ -10,7 +10,10 @@ async function addWatcher(url, xpath, cookies="", callbackChange){
         throw new Error('Must define url, xpath and cookies')
 
     if(!callbackChange)
-        throw new Error("Missing calback")
+        throw new Error("Missing callback")
+
+    if(watchItems.find((item)=>item.xpath===xpath && item.url===url)!==undefined)
+        throw new Error("Job item already exists")        
 
     const client = new MongoClient("mongodb://localhost:27017")
     let id
@@ -32,13 +35,10 @@ async function addWatcher(url, xpath, cookies="", callbackChange){
         await client.close()
     }
 
-    if(watchItems.find((item)=>item.xpath===xpath && item.url===url)!==undefined)
-        throw new Error("Job item already exists")
-
     !watching && (watching=true) && setInterval(()=>{
         for(item of watchItems){
-            exec(`./checkUrl.sh -u "${url}" -x "${xpath}" -c "${cookies}" -f "${id}"`, (err, stdo, stderr)=>{   
-                stdo.length>0&&callbackChange({url, change:  stdo, date: new Date().toLocaleString()})
+            exec(`./checkUrl.sh -u "${item.url}" -x "${item.xpath}" -c "${item.cookies}" -f "${item.id}"`, (err, stdo, stderr)=>{   
+                stdo.length>0&&callbackChange({url: item.url, change:  stdo, date: new Date().toLocaleString()})
             })
         }
     },checksDelay)
