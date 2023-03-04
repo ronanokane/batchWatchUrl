@@ -67,7 +67,7 @@ async function loggedChanges(id){
         throw new Error(`Item jobNo ${id} doesn' t exist..`)
 
     const exec= require('util').promisify(require('child_process').exec)
-    const {stdout: out}=await exec(`cd "${__dirname}/watches" && git log --pretty=format:'%H,%ad' --date=iso ${watchItems[id].id}`)
+    const {stdout: out}=await exec(`cd "${__dirname}/watches" && git log --pretty=format:'%H,%ad' --date=local ${watchItems[id].id}`)
 
     const changes=[]
     for(line of out.split('\n')){
