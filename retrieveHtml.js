@@ -16,15 +16,10 @@ const puppeteer = require("puppeteer-core");
         var cookies=process.argv[3].split('; ').flatMap((item)=>{
             const equalsSign=item.indexOf('=')
             return equalsSign==-1 ? [] : {domain: domainname, name: item.slice(0,equalsSign), value: item.slice(equalsSign+1)}
-        });
+        })
         await page.setCookie(...cookies)
-    }
-    try{
-        await page.goto(process.argv[2],{waitUntil: 'domcontentloaded'})
-        console.log(await page.content())
-    }catch(err){
-        browser.close()     
-        process.exit(1)
-    }
-    browser.close()
+    }      
+    await page.goto(process.argv[2],{waitUntil: 'domcontentloaded'})
+    console.log(await page.content())
+    browser.close()     
 })()
