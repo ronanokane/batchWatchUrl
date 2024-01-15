@@ -19,6 +19,7 @@ const puppeteer = require("puppeteer-core");
         });
     }
     try{
+        await page.setCookie(...cookies)
         await page.goto(process.argv[2],{waitUntil: 'domcontentloaded'})
         console.log(await page.content())
     }catch(err){
