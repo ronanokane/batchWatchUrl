@@ -17,9 +17,9 @@ const puppeteer = require("puppeteer-core");
             const equalsSign=item.indexOf('=')
             return equalsSign==-1 ? [] : {domain: domainname, name: item.slice(0,equalsSign), value: item.slice(equalsSign+1)}
         });
+        await page.setCookie(...cookies)
     }
     try{
-        await page.setCookie(...cookies)
         await page.goto(process.argv[2],{waitUntil: 'domcontentloaded'})
         console.log(await page.content())
     }catch(err){
